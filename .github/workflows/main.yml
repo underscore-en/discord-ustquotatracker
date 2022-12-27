@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+jobs:
+  main:
+    if: "contains(github.event.head_commit.message, 'ci:deploy')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm i
+      - run: npm run build
+      - run: npm prune --production
+
+        # construct .env
+      - uses: ikuanyshbekov/app-yaml-env-compiler@v1.0
+        env:
+          MONGO_URI: ${{secrets.MONGO_URI}}
+          DISCORD_BOT_TOKEN: ${{secrets.DISCORD_BOT_TOKEN}}
+
+      - name: "deploy app"
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
+          CLOUDSDK_CORE_DISABLE_PROMPTS: 1
+        with:
+          args: app deploy app.yaml --version=production

@@ -1,0 +1,11 @@
+# ide
+.idea
+.vs
+
+# development
+/node_modules
+/build
+/data
+
+# secrets
+.env

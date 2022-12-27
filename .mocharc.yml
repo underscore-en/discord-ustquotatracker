@@ -1,0 +1,5 @@
+bail: false
+exit: true
+timeout: 30000
+require: 'ts-node/register'
+reporter: spec

@@ -1,0 +1,14 @@
+runtime: nodejs16
+
+env_variables:
+  NODE_ENV: production
+  MONGO_URI: $MONGO_URI
+  DISCORD_BOT_TOKEN: $DISCORD_BOT_TOKEN
+
+instance_class: F1
+automatic_scaling:
+  min_instances: 1
+  max_instances: 1
+
+inbound_services:
+  - warmup
